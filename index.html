@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supernote Templates</title>
+  <meta name="description" content="Design and export page templates for the Supernote Nomad.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap">
+</head>
+<body>
+  <div class="wrap">
+    <aside class="rail">
+      <header>
+        <h1>Supernote Templates</h1>
+        <p>Nomad page · 1404 × 1872 px · 300 ppi</p>
+      </header>
+      <select id="template" aria-label="Template"></select>
+      <p id="blurb" class="blurb"></p>
+      <div id="controls" class="rail"></div>
+      <button class="btn" id="reset" type="button">Reset to defaults</button>
+    </aside>
+
+    <main class="stage">
+      <div class="stage-bar">
+        <div class="status" id="status" aria-live="polite"></div>
+        <div class="actions">
+          <button class="btn" id="zoom" type="button" aria-pressed="false">Actual size</button>
+          <button class="btn" id="copy" type="button">Copy link</button>
+          <button class="btn primary" id="export" type="button">Export PNG</button>
+        </div>
+      </div>
+      <div class="device" id="device"><canvas id="page" aria-label="Template preview"></canvas></div>
+      <p class="note">
+        Copy the PNG into <code>Note/MyStyle</code> on the Nomad (USB, Supernote Cloud, or Browse &amp; Access).
+        Actual size depends on your screen reporting CSS inches correctly.
+      </p>
+    </main>
+  </div>
+  <script type="module" src="./src/main.ts"></script>
+</body>
+</html>
