@@ -130,9 +130,23 @@ export function startApp(templates: AnyTemplate[]): void {
 
   $<HTMLButtonElement>('reset').addEventListener('click', () => { s = { ...tpl.defaults }; buildControls(); render(); });
 
+  // Fit mode: size the page to the largest that fits the viewport, frame included.
+  const viewport = $<HTMLDivElement>('viewport');
+  const device = $<HTMLDivElement>('device');
+  const fit = (): void => {
+    const pad = getComputedStyle(device);
+    const padX = parseFloat(pad.paddingLeft) + parseFloat(pad.paddingRight);
+    const padY = parseFloat(pad.paddingTop) + parseFloat(pad.paddingBottom);
+    const w = viewport.clientWidth - padX;
+    const h = viewport.clientHeight - padY;
+    const width = Math.max(120, Math.floor(Math.min(w, h * PAGE.width / PAGE.height)));
+    canvas.style.setProperty('--fit-width', `${width}px`);
+  };
+  new ResizeObserver(fit).observe(viewport);
+
   $<HTMLButtonElement>('zoom').addEventListener('click', e => {
     const btn = e.currentTarget as HTMLButtonElement;
-    const on = $('device').classList.toggle('actual');
+    const on = viewport.classList.toggle('actual');
     btn.setAttribute('aria-pressed', String(on));
     btn.textContent = on ? 'Fit to window' : 'Actual size';
   });
@@ -148,12 +162,16 @@ export function startApp(templates: AnyTemplate[]): void {
     setTimeout(() => { copyBtn.textContent = 'Copy link'; }, 1600);
   });
 
+  const saved = $<HTMLDialogElement>('saved');
   $<HTMLButtonElement>('export').addEventListener('click', () => {
     canvas.toBlob(blob => {
       if (!blob) return;
-      const a = el('a', { href: URL.createObjectURL(blob), download: tpl.fileName?.(s) ?? `${tpl.id}.png` });
+      const name = tpl.fileName?.(s) ?? `${tpl.id}.png`;
+      const a = el('a', { href: URL.createObjectURL(blob), download: name });
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      $('saved-name').textContent = name;
+      saved.showModal();
     }, 'image/png');
   });
 

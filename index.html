@@ -31,13 +31,22 @@
           <button class="btn primary" id="export" type="button">Export PNG</button>
         </div>
       </div>
-      <div class="device" id="device"><canvas id="page" aria-label="Template preview"></canvas></div>
-      <p class="note">
-        Copy the PNG into <code>Note/MyStyle</code> on the Nomad (USB, Supernote Cloud, or Browse &amp; Access).
-        Actual size depends on your screen reporting CSS inches correctly.
-      </p>
+      <div class="viewport" id="viewport">
+        <div class="device" id="device"><canvas id="page" aria-label="Template preview"></canvas></div>
+      </div>
     </main>
   </div>
+
+  <dialog id="saved" aria-labelledby="saved-title">
+    <h2 id="saved-title">Saved</h2>
+    <p>Your browser saved <code id="saved-name"></code>.</p>
+    <p>
+      Copy the PNG into <code>Note/MyStyle</code> on the Nomad (USB, Supernote Cloud, or Browse &amp; Access),
+      then pick it from the custom templates when you create a note.
+    </p>
+    <p class="muted">Actual size depends on your screen reporting CSS inches correctly.</p>
+    <form method="dialog"><button class="btn primary" autofocus>Done</button></form>
+  </dialog>
   <script type="module" src="./src/main.ts"></script>
 </body>
 </html>

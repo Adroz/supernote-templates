@@ -1,5 +1,7 @@
 # Supernote Templates
 
+**Live: https://adroz.github.io/supernote-templates/**
+
 Design page templates for the Supernote Nomad in the browser, tweak them live, and
 export a 1404 × 1872 px PNG (the Nomad's 300 ppi screen).
 

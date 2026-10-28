@@ -23,8 +23,14 @@
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.45 var(--ui); }
-.wrap { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 28px; padding: 24px 20px 40px; max-width: 1180px; margin: 0 auto; }
-@media (max-width: 760px) { .wrap { grid-template-columns: minmax(0, 1fr); padding-inline: 16px; } }
+/* Wide screens: one screen tall. The settings rail scrolls on its own; the page fits the rest. */
+.wrap { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 28px; padding: 0 20px; max-width: 1180px; margin: 0 auto; height: 100dvh; }
+.wrap > .rail { overflow-y: auto; padding-block: 24px; padding-right: 6px; scrollbar-gutter: stable; }
+.wrap > .stage { padding-block: 24px; }
+@media (max-width: 760px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); padding-inline: 16px; height: auto; }
+  .wrap > .rail { overflow: visible; padding-bottom: 0; }
+}
 header h1 { font: 600 20px/1.2 var(--label); letter-spacing: .02em; margin: 0 0 4px; }
 header p, .blurb { margin: 0; color: var(--muted); font-size: 13px; }
 .rail { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
@@ -43,16 +49,29 @@ legend { font: 600 11px var(--label); text-transform: uppercase; letter-spacing:
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button[aria-pressed=true] { background: var(--accent); color: var(--accent-ink); }
 button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.stage { min-width: 0; display: flex; flex-direction: column; gap: 12px; align-items: center; }
-.stage-bar { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
-.status { font: 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.stage { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
+.stage-bar { width: 100%; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: space-between; }
+.status { flex: 1 1 16em; min-width: 0; font: 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+#zoom { min-width: 8.5em; }
 .status.error { color: var(--error); }
-.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; flex: none; }
 .btn { border: 1px solid var(--line); background: var(--panel); color: var(--fg); font: 500 13px var(--ui); padding: 7px 12px; border-radius: 5px; cursor: pointer; }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.device { background: var(--paper-frame); padding: 18px 14px 26px; border-radius: 14px; width: min(100%, 548px); }
-.device canvas { display: block; width: 100%; height: auto; aspect-ratio: 1404 / 1872; background: #fff; }
-.device.actual { width: auto; max-width: 100%; }
-.device.actual canvas { width: 4.68in; max-width: 100%; }
-.note { font-size: 12px; color: var(--muted); max-width: 520px; text-align: center; margin: 0; }
+.viewport { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; justify-content: center; align-items: flex-start; }
+.viewport.actual { overflow: auto; }
+.device { background: var(--paper-frame); padding: 18px 14px 26px; border-radius: 14px; flex: none; }
+/* --fit-width is set from script to the largest size that fits the viewport. */
+.device canvas { display: block; width: var(--fit-width, min(100%, 520px)); height: auto; aspect-ratio: 1404 / 1872; background: #fff; }
+.viewport.actual canvas { width: 4.68in; }
+@media (max-width: 760px) {
+  .viewport { overflow: visible; }
+  .viewport:not(.actual) .device { width: 100%; }
+  .viewport:not(.actual) canvas { width: 100%; }
+}
+dialog { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--fg); max-width: min(92vw, 460px); padding: 20px 22px; }
+dialog::backdrop { background: rgb(0 0 0 / .5); }
+dialog h2 { font: 600 17px/1.2 var(--label); letter-spacing: .02em; margin: 0 0 10px; }
+dialog p { margin: 0 0 10px; }
+dialog .muted { color: var(--muted); font-size: 12px; }
+dialog form { display: flex; justify-content: flex-end; margin-top: 14px; }
 code { font: 12px var(--mono); }
